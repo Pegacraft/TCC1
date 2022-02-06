@@ -1,1 +1,0 @@
-This folder contains pictures to document components, that are too big to read their port descriptions in game.
