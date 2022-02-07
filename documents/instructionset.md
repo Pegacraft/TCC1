@@ -170,7 +170,7 @@ ___
 ### Call and Return
 ___
 Call and return are used to have function calls, which are essentially branches, that you can return to.  
-Its implemented by using the memory and a reserved register holding the stack pointer, which tracks the calls to be able to return.
+It's implemented by using the memory and a reserved register holding the stack pointer, which tracks the calls to be able to return.
 Both methods don't have an immediate version.
 #### call
 Calls a function and jumps to its address. The current pc will be saved to the function stack and the stack pointer will be updated (push).  
