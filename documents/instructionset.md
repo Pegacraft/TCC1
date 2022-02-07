@@ -142,8 +142,39 @@ Writing to IO port and memory works pretty similar.
 It always requires an address calculated from an offset and an immediate value 
 as well as some defined target to write or read.
 
+#### load / load word from memory
+Reads a 64-bit word from memory using the memory interface.  
+The value `M` is located in a reserved register holding the dynamic data-segment pointer and the immediate value is effectively an offset starting at `M`.
+The immediate version `lwi` actually loads using a direct memory address instead of using an offset.  
+`lw {M:mem}[I:imm][R:reg]` `0x40-MM00RR-IIIIIIII`  
+`lwi {0}[I:imm][R:reg]` `0x50-0000RR-IIIIIIII`
+#### store / store word to memory
+Writes a 64-bit word to memory using the memory interface.  
+The value `M` is located in a reserved register holding the dynamic data-segment pointer and the immediate value is effectively an offset starting at `M`.
+The immediate version `lwi` actually stores using a direct memory address instead of using an offset.  
+`sw {M:mem}[I:imm][R:reg]` `0x41-MM00RR-IIIIIIII`  
+`swi {0}[I:imm][R:reg]` `0x51-0000RR-IIIIIIII`
+#### io read / read io port data
+Reads a 64-bit word and a control bit from an IO device using the IO port interface.  
+The 64-bit word will be stored in register `R` and the boolean value will be stored in `S`.  
+The immediate value is used as direct address, meaning a value of 1 means targeting device 1.  
+`lio [I:imm][R:reg][S:reg]` `0x44-00RRSS-IIIIIIII`  
+`lioi [I:imm][R:reg][S:reg]` `0x54-00RRSS-IIIIIIII`
+#### io write / write io port data
+Writes a 64-bit word and a control bit to an IO device using the IO port interface.  
+The 64-bit word will be taken from register `R` and the boolean value will be taken from `S`.  
+The immediate value is used as direct address, meaning a value of 1 means targeting device 1.  
+`sio {M:mem}[I:imm][R:reg]` `0x45-MM00RR-IIIIIIII`  
+`sioi {0}[I:imm][R:reg]` `0x55-0000RR-IIIIIIII`
 ___
 ### Call and Return
 ___
-
-`TODO`
+Call and return are used to have function calls, which are essentially branches, that you can return to.  
+Its implemented by using the memory and a reserved register holding the stack pointer, which tracks the calls to be able to return.
+Both methods don't have an immediate version.
+#### call
+Calls a function and jumps to its address. The current pc will be saved to the function stack and the stack pointer will be updated (push).  
+`call [I:imm]` `0x42-IIIIII-IIIIIIII`  
+#### return
+Returns from a function and jumps back to its call. The current pc will be overwritten by the top value on the function stack and the stack pointer will be updated (pop).  
+`ret` `0x43-X-X`  
