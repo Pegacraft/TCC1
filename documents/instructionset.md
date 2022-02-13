@@ -156,16 +156,14 @@ The immediate version `lwi` actually stores using a direct memory address instea
 `swi {0}[I:imm][R:reg]` `0x51-0000RR-IIIIIIII`
 #### io read / read io port data
 Reads a 64-bit word and a control bit from an IO device using the IO port interface.  
-The 64-bit word will be stored in register `R` and the boolean value will be stored in `S`.  
+The 64-bit word will be stored in register `R` and the second value will be stored in `S`.  
 The immediate value is used as direct address, meaning a value of 1 means targeting device 1.  
-`lio [I:imm][R:reg][S:reg]` `0x44-00RRSS-IIIIIIII`  
-`lioi [I:imm][R:reg][S:reg]` `0x54-00RRSS-IIIIIIII`
+`lio [I:imm][R:reg][S:reg]` `0x44-RRSS00-IIIIIIII`  
 #### io write / write io port data
 Writes a 64-bit word and a control bit to an IO device using the IO port interface.  
-The 64-bit word will be taken from register `R` and the boolean value will be taken from `S`.  
+The 64-bit word will be taken from register `R` and the second value will be taken from `S`.  
 The immediate value is used as direct address, meaning a value of 1 means targeting device 1.  
-`sio {M:mem}[I:imm][R:reg]` `0x45-MM00RR-IIIIIIII`  
-`sioi {0}[I:imm][R:reg]` `0x55-0000RR-IIIIIIII`
+`sio [I:imm][R:reg][S:reg]` `0x45-RRSS00-IIIIIIII`  
 ___
 ### Call and Return
 ___
@@ -178,3 +176,20 @@ Calls a function and jumps to its address. The current pc will be saved to the f
 #### return
 Returns from a function and jumps back to its call. The current pc will be overwritten by the top value on the function stack and the stack pointer will be updated (pop).  
 `ret` `0x43-X-X`  
+___
+### R-Type
+___
+Functions that entirely work on the register file without any further complex method applied to it.  
+These functions usually dont use the immediate value.
+A condition can be applied.
+#### copy
+Copies a value from a register to a target register.  
+`cp [R:reg][T:reg]` `0xC0-RR00TT-X`.  
+`cpeq [R:reg][T:reg][S:reg][I:imm]` `0xC2-RRSSTT-IIIIIIII`. (comparing S = I)  
+`cpi [I:imm][T:reg]` `0xD0-0000TT-IIIIIIII`.  
+`cpeqi [I:imm][T:reg][R:reg][S:reg]` `0xD2-RRSSTT-IIIIIIII`. (comparing R = S)  
+#### swap
+Swaps the value of two registers. This does not have an immediate mode  
+A condition can be applied.  
+`swp [R:reg][S:reg]` `0xC8-RRSS00-X`.  
+`swpeq [R:reg][S:reg]` `0xCA-RRSS00-X`.  
