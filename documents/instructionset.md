@@ -22,38 +22,47 @@ format to display possible values without further explaination:
 * `[R:reg]` means you can relate the argument with the bit notation by looking where the R's are
 ___
 ### Jumping and branching
-___
-#### unconditional jump
-An unconditional jump is used for jumping to a fixed pc 
+A jump is used for jumping to a fixed pc
 by setting the program counter to a specific value.  
+A branch is used for branching to a relative pc
+by adding to the current pc.
+___
+#### unconditional jump / branch
 `jmp [J:adr]` `0x01-JJJJJJ-JJJJJJJJ` - the adr is defined by the last 7 bytes in the instruction 
+and therefore you can jump by an 56-bit unsigned value.  
+`b [B:adr]` `0x09-BBBBBB-BBBBBBBB` - the adr is defined by the last 7 bytes in the instruction 
 and therefore you can jump by an 56-bit unsigned value
-#### branches
-Branch based on the current pc by a given distance if a specific condition is met.  
-The conditions are checked based on signed values.
-#### branch on equal
-`beq [R:reg],[S:reg],[T:imm]` `0x02-RRSS00-TTTTTTTT`  
+#### conditional jumps / branches
+Jump or branch if a specific condition is met. The target or distance is limited by 32-bit.
+#### equal
+`jeq [R:reg],[S:reg],[T:imm]` `0x02-RRSS00-TTTTTTTT`  
+`beq [R:reg],[S:reg],[T:imm]` `0x0A-RRSS00-TTTTTTTT`  
 Branching to `T` if register contents match condition `R = S`.
-#### branch on not equal
-`bneq [R:reg],[S:reg],[T:imm]` `0x03-RRSS00-TTTTTTTT`  
-Branching to `T` if register contents do **not** match condition `R = S`.
-#### branch on less
-`bl [R:reg],[S:reg],[T:imm]` `0x04-RRSS00-TTTTTTTT`  
+#### not equal
+`jneq [R:reg],[S:reg],[T:imm]` `0x03-RRSS00-TTTTTTTT`  
+`bneq [R:reg],[S:reg],[T:imm]` `0x0B-RRSS00-TTTTTTTT`  
+Branching to `T` if register contents match condition `R != S`.
+#### less
+`jl [R:reg],[S:reg],[T:imm]` `0x04-RRSS00-TTTTTTTT`  
+`bl [R:reg],[S:reg],[T:imm]` `0x0C-RRSS00-TTTTTTTT`  
 Branching to `T` if register contents match condition `R < S`.
-#### branch on less or equal
-`bleq [R:reg],[S:reg],[T:imm]` `0x05-RRSS00-TTTTTTTT`  
+#### less or equal
+`jleq [R:reg],[S:reg],[T:imm]` `0x05-RRSS00-TTTTTTTT`  
+`bleq [R:reg],[S:reg],[T:imm]` `0x0D-RRSS00-TTTTTTTT`  
 Branching to `T` if register contents match condition `R <= S`.
-#### branch on greater
-`bg [R:reg],[S:reg],[T:imm]` `0x06-RRSS00-TTTTTTTT`  
-Branching to `T` if register contents do **not** match condition `R <= S`.
-#### branch on greater or equal
-`bgeq [R:reg],[S:reg],[T:imm]` `0x07-RRSS00-TTTTTTTT`  
-Branching to `T` if register contents do **not** match condition `R < S`.
-#### branching with immediate values
+#### greater
+`jg [R:reg],[S:reg],[T:imm]` `0x06-RRSS00-TTTTTTTT`  
+`bg [R:reg],[S:reg],[T:imm]` `0x0E-RRSS00-TTTTTTTT`  
+Branching to `T` if register contents match condition `R > S`.
+#### greater or equal
+`jgeq [R:reg],[S:reg],[T:imm]` `0x07-RRSS00-TTTTTTTT`  
+`bgeq [R:reg],[S:reg],[T:imm]` `0x0F-RRSS00-TTTTTTTT`  
+Branching to `T` if register contents match condition `R >= S`.
+#### with immediate values
 To branch with an immediate value in the comparison part of the instruction, 
 the immediate flag needs to be set ultimately changing the actual instruction.  
-e.g. the immediate version `beq` would be:  
-`beqi [R:reg],[S:imm],[T:imm]` `0x12-RRTTTT-SSSSSSSS`  
+e.g. the immediate version of `beq` would be:  
+`beqi [R:reg],[S:imm],[T:imm]` `0x1A-RRTTTT-SSSSSSSS`  
 **Note**: The actual 32-bit immediate value is used for the comparison and a 16-bit value is used for branching.  
 This means using this method, you cannot branch the same distance as without the immediate comparison.
 ___
@@ -146,14 +155,14 @@ as well as some defined target to write or read.
 Reads a 64-bit word from memory using the memory interface.  
 The value `M` is located in a reserved register holding the dynamic data-segment pointer and the immediate value is effectively an offset starting at `M`.
 The immediate version `lwi` actually loads using a direct memory address instead of using an offset.  
-`lw {M:mem}[I:imm][R:reg]` `0x40-MM00RR-IIIIIIII`  
-`lwi {0}[I:imm][R:reg]` `0x50-0000RR-IIIIIIII`
+`lw {M:mem}[I:imm][R:reg]` `0x40-MM00RR-IIIIIIII` `(addr = M + I, target: R)`  
+`lwi {0}[I:imm][R:reg]` `0x50-0000RR-IIIIIIII` `(addr = I, target: R)`  
 #### store / store word to memory
 Writes a 64-bit word to memory using the memory interface.  
 The value `M` is located in a reserved register holding the dynamic data-segment pointer and the immediate value is effectively an offset starting at `M`.
-The immediate version `lwi` actually stores using a direct memory address instead of using an offset.  
-`sw {M:mem}[I:imm][R:reg]` `0x41-MM00RR-IIIIIIII`  
-`swi {0}[I:imm][R:reg]` `0x51-0000RR-IIIIIIII`
+The immediate version `swi` actually stores using a direct memory address instead of using an offset.  
+`sw {M:mem}[I:imm][R:reg]` `0x41-MM00RR-IIIIIIII` `(addr = M + I, source: R)`  
+`swi {0}[I:imm][R:reg]` `0x51-0000RR-IIIIIIII` `(addr = I, source: R)`
 #### io read / read io port data
 Reads a 64-bit word and a control bit from an IO device using the IO port interface.  
 The 64-bit word will be stored in register `R` and the second value will be stored in `S`.  
