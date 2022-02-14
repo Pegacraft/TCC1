@@ -155,14 +155,14 @@ as well as some defined target to write or read.
 Reads a 64-bit word from memory using the memory interface.  
 The value `M` is located in a reserved register holding the dynamic data-segment pointer and the immediate value is effectively an offset starting at `M`.
 The immediate version `lwi` actually loads using a direct memory address instead of using an offset.  
-`lw {M:mem}[I:imm][R:reg]` `0x40-MM00RR-IIIIIIII` `(addr = M + I, target: R)`  
-`lwi {0}[I:imm][R:reg]` `0x50-0000RR-IIIIIIII` `(addr = I, target: R)`  
+`lw {M:mem}[I:imm][R:reg]` `0x40-00MMRR-IIIIIIII` `(addr = M + I, target: R)`  
+`lwi [S:reg][I:imm][R:reg]` `0x50-00SSRR-IIIIIIII` `(addr = S + I, target: R)`  
 #### store / store word to memory
 Writes a 64-bit word to memory using the memory interface.  
 The value `M` is located in a reserved register holding the dynamic data-segment pointer and the immediate value is effectively an offset starting at `M`.
 The immediate version `swi` actually stores using a direct memory address instead of using an offset.  
-`sw {M:mem}[I:imm][R:reg]` `0x41-MM00RR-IIIIIIII` `(addr = M + I, source: R)`  
-`swi {0}[I:imm][R:reg]` `0x51-0000RR-IIIIIIII` `(addr = I, source: R)`
+`sw {M:mem}[I:imm][R:reg]` `0x41-00MMRR-IIIIIIII` `(addr = M + I, source: R)`  
+`swi [S:reg][I:imm][R:reg]` `0x51-00SSRR-IIIIIIII` `(addr = S + I, source: R)`
 #### io read / read io port data
 Reads a 64-bit word and a control bit from an IO device using the IO port interface.  
 The 64-bit word will be stored in register `R` and the second value will be stored in `S`.  
