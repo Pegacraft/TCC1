@@ -64,3 +64,15 @@ for(char,65-91){
     print(0,0,0,char);
 }
 ```
+Bubblesort:
+```
+array = [6,1,4,2,9,5];
+len = 6;
+for(i,1,len,1) {
+    if(array[i-1] > array[i]) {
+        val = array[i];
+        array[i] = array[i-1];
+        array[i-1] = val;
+    }
+}
+```
