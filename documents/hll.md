@@ -35,6 +35,13 @@ Conditional blocks start with `if([condition]) { }` and might be inverted using 
 or chained by using `else{ }` or `else([condition]){ }`.  
 A condition might include arithmetic and logical operations as well as boolean logic using `|| &&`.
 
+## Arrays
+Arrays are used for having more than one value inside a variable and can be used to iterate through data in an ordered list fashion.
+They are declared directly using either values `array = [1,2,3];` 
+or a length value to produce an empty array of that length, e.g. a length of 5: `array = [$5];`.  
+The values of an array can be accessed using a similar syntax `foo[0] = foo[1];`  
+The length of an array is readable by using `length(foo,bar)`, where `foo` is the array and `bar` the variable to store the length to.
+
 ## Inbuilt functions
 There are some inbuilt function that are exclusive to the processor, the game Turing Complete or the compiler itself.
 
