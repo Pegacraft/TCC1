@@ -9,7 +9,7 @@ ___
 - Declaring a variable works by setting a name and assign a value to it - assignment uses `=` as operator: `foo=5;`
 - Declaring constants is similar to variables, it requires a `#` in front of it and cannot be used inside of a block: `#const=42;`
 - Between any symbol or qualifier may be an unlimited amount of spaces or linebreaks.
-- To use procedures from another file, put `use([file])` at the start of your code.
+- To use procedures from another file, put `use([file])` at the start of your code. The specified file should contain source code as well.
 ## Loops and goto
 There are `while`, `for` and `loop` loops. `label` and `goto` are available as well.
 
@@ -42,7 +42,6 @@ There are some inbuilt function that are exclusive to the processor, the game Tu
 - `iowrite([val1],[val2],[port])` writes data to an IO port in the game.
 - `print([mode],[A],[B],[C])` writes data to the console. the mode is identical to the mode in the game
 - `ascii([character])` converts a  constant character expression into in-game ascii if available.
-- The specified file should contain source code as well.
 
 ## Keywords
 Some keywords are defined to reduce boilerplate definitions and should not be overwritten:
