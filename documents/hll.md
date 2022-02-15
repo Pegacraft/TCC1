@@ -9,6 +9,7 @@ ___
 - Declaring a variable works by setting a name and assign a value to it - assignment uses `=` as operator: `foo=5;`
 - Declaring constants is similar to variables, it requires a `#` in front of it and cannot be used inside of a block: `#const=42;`
 - Between any symbol or qualifier may be an unlimited amount of spaces or linebreaks.
+- To use procedures from another file, put `use([file])` at the start of your code.
 ## Loops and goto
 There are `while`, `for` and `loop` loops. `label` and `goto` are available as well.
 
@@ -28,8 +29,32 @@ Division and modulo might be implemented on software-side.
 Further logic operations are done by `| & ~` (or, and, not) and can be combined with arithmetic ones.  
 Shifting uses `<<` and `>>` as well as rotation uses `<<<` and `>>>`.
 
-## Inbuilt functions
-There are some inbuilt function that are exclusive to the processor and the game Turing Complete.
+## Conditions
+Conditions are generally based on unsigned values and use the commonly accepted symbols: `=, !=, <, >, <=, >=`.  
+Conditional blocks start with `if([condition]) { }` and might be inverted using `ifnot([condition]) { }` 
+or chained by using `else{ }` or `else([condition]){ }`.  
+A condition might include arithmetic and logical operations as well as boolean logic using `|| &&`.
 
-- `ioread([name1],[name2],[port])` which reads data from an IO port in the game.
-- `iowrite([name1],[name2],[port])` which writes data to an IO port in the game.
+## Inbuilt functions
+There are some inbuilt function that are exclusive to the processor, the game Turing Complete or the compiler itself.
+
+- `ioread([val1],[val2],[port])` reads data from an IO port in the game.
+- `iowrite([val1],[val2],[port])` writes data to an IO port in the game.
+- `print([mode],[A],[B],[C])` writes data to the console. the mode is identical to the mode in the game
+- `ascii([character])` converts a  constant character expression into in-game ascii if available.
+- The specified file should contain source code as well.
+
+## Keywords
+Some keywords are defined to reduce boilerplate definitions and should not be overwritten:
+- `false` represents the negative result of a boolean operation, it's defined as number `0`
+- `true` represents the positive result of a boolean operation, it's defined as number `1`
+- `console` represents the port of the console output in the game, its defined as number `4`
+- `keyboard` represents the port of the keyboard output in the game, its defined as number `6`
+
+## Example
+Writing every letter A-Z to the console:
+```
+for(char,65-91){
+    print(0,0,0,char);
+}
+```
