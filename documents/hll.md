@@ -24,7 +24,7 @@ An example for a range could be `0-5`.
 `goto([name])` continues to execute code from the label with the given name.
 
 ## Math
-Arithmetic operations are integrated into the assigment: `foo = 5 + 9` and may include: `( ) + - *`.  
+Arithmetic operations are integrated into the assigment: `foo = 5 + 9` and may include: `( ) + - * ^`.  
 Division and modulo might be implemented on software-side.
 Further logic operations are done by `| & ~` (or, and, not) and can be combined with arithmetic ones.  
 Shifting uses `<<` and `>>` as well as rotation uses `<<<` and `>>>`.
