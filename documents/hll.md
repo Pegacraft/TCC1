@@ -5,6 +5,7 @@ ___
 - C-like brackets `{ }` are used to define a program block.
 - Callable procedures are defined by naming a program block and must not be nested into other blocks: `foo{ }`
 - Arguments or parameters of a procedure should be defined in normal brackets after the name: `foo(bar){ }`
+- To reduce complexity, each method does allow only `0-3` parameters/arguments.
 - Every line containing a command, that is not part of a block definition, must be terminated with a `;`
 - Declaring a variable works by setting a name and assign a value to it - assignment uses `=` as operator: `foo=5;`
 - Declaring constants is similar to variables, it requires a `#` in front of it and cannot be used inside of a block: `#const=42;`
