@@ -5,5 +5,6 @@ set(CMAKE_C_STANDARD 11)
 
 include_directories(Compiler)
 
-add_executable(Turing_Complete
-        Compiler/main.c)
+set(SOURCE_FILES Compiler/main.c Compiler/util.h Compiler/util.c)
+
+add_executable(Turing_Complete ${SOURCE_FILES})
