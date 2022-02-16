@@ -2,5 +2,5 @@ x = 5;
 z = 0;
 label(start);
 ioread(z,0,10);
-s = z + x;
-goto(start);
+z = z + x;
+iowrite(z,0,9);
