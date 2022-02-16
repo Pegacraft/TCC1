@@ -1,0 +1,6 @@
+x = 5
+z = 0
+label(start)
+ioread[z,,10]
+s = z + x
+goto(start)
