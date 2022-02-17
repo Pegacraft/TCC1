@@ -6,9 +6,70 @@
 #include <stdlib.h>
 #include "instr.h"
 
+instr_node *create_instr_list_node(instruction *instr) {
+    instr_node *node = malloc(sizeof(struct instr_node));
+    node->instr = instr;
+    node->next = NULL;
+    node->prev = NULL;
+    return node;
+}
+
+instruction_list *create_instr_list() {
+    instruction_list *list = malloc(sizeof(struct instruction_list));
+    list->length = 0;
+    list->head = NULL;
+    list->tail = NULL;
+    return list;
+}
+
+void instr_list_add(instruction_list *list, instruction *instr) {
+    instr_node *node = create_instr_list_node(instr);
+    if (list->tail != NULL) {
+        instr_node *tail = list->tail;
+        tail->next = node;
+        node->prev = tail;
+        list->tail = node;
+    } else if (list->head != NULL) {
+        list->head->next = node;
+        node->prev = list->head;
+        list->tail = node;
+    } else {
+        list->head = node;
+    }
+    list->length += 1;
+}
+
+int instr_list_length(instruction_list *list) {
+    return list->length;
+}
+
+instruction *instr_list_to_array(instruction_list *list) {
+    int length = instr_list_length(list);
+    instruction *instructions = malloc(length * sizeof(struct instruction));
+    instr_node *head = list->head;
+    for (int i = 0; i < length; i++) {
+        instructions[i] = *head->instr;
+        head = head->next;
+    }
+    return instructions;
+}
+
+void instr_list_clear(instruction_list *list) {
+    int length = instr_list_length(list);
+    instr_node *head = list->head;
+    for (int i = 0; i < length; i++) {
+        instr_node *next = head->next;
+        free(head);
+        head = next;
+    }
+    list->head = NULL;
+    list->tail = NULL;
+    list->length = 0;
+}
+
 instruction *create_instruction(opcode op_code, unsigned char arg1, unsigned char arg2, unsigned char arg3,
                                 unsigned long imm) {
-    instruction *instr = (instruction *) malloc(sizeof(instruction));
+    instruction *instr = (instruction *) malloc(sizeof(struct instruction));
     instr->op_code = op_code;
     instr->arg1 = arg1;
     instr->arg2 = arg2;
@@ -34,7 +95,7 @@ void write_raw(FILE *fp, instruction *instr) {
     fwrite(&instr->op_code, sizeof(unsigned char), 1, fp);
 }
 
-void write_all(char *filename, instruction instr[], int amount, bool append) {
+void write_all(char *filename, instruction *instr, int amount, bool append) {
     FILE *fp = fopen(filename, append ? "ab" : "wb");
     if (fp == NULL) {
         printf("ERROR, compiler doesnt like your file. (or just cannot find it) \"%s\"", filename);

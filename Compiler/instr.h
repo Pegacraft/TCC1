@@ -20,6 +20,18 @@ typedef struct instruction {
 
 #define IMMEDIATE_FLAG 0x10
 
+typedef struct instr_node {
+    instruction *instr;
+    struct instr_node *next;
+    struct instr_node *prev;
+} instr_node;
+
+typedef struct instruction_list {
+    instr_node *head;
+    instr_node *tail;
+    int length;
+} instruction_list;
+
 typedef enum opcode {
     NOP = 0x00,
     //jumps
@@ -50,10 +62,22 @@ typedef enum comp_func {
     EQ = 0x02, NE = 0x03, LT = 0x04, LE = 0x05, GT = 0x06, GE = 0x07
 } comp_func;
 
+instr_node *create_instr_list_node(instruction *instr);
+
+instruction_list *create_instr_list();
+
+void instr_list_add(instruction_list *list, instruction *instr);
+
+int instr_list_length(instruction_list *list);
+
+instruction *instr_list_to_array(instruction_list *list);
+
+void instr_list_clear(instruction_list *list);
+
 instruction *create_instruction(opcode op_code, unsigned char arg1, unsigned char arg2, unsigned char arg3,
                                 unsigned long imm);
 
-void write_all(char *filename, instruction instr[], int amount, bool append);
+void write_all(char *filename, instruction *instr, int amount, bool append);
 
 instruction *instr_jump_no_cond(unsigned long long target, bool branch);
 
