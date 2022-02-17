@@ -6,7 +6,7 @@
 #include <stdlib.h>
 #include "util.h"
 
-char *readFile(char *fileName, bool skipSpacing) {
+char *read_file(char *fileName, bool skipSpacing) {
     FILE *fp = fopen(fileName, "r");
     if (fp == NULL) {
         printf("ERROR, compiler doesnt like your file. (or just cannot find it) \"%s\"", fileName);
@@ -29,6 +29,19 @@ char *readFile(char *fileName, bool skipSpacing) {
             result[i] = buffer[i];
         }
         free(buffer);
+        fclose(fp);
         return result;
-    } else return buffer;
+    } else {
+        fclose(fp);
+        return buffer;
+    }
+}
+
+void write_file(char *fileName, char *data) {
+    FILE *fp = fopen(fileName, "w");
+    int errCode = fputs(data, fp);
+    if (errCode == EOF) {
+        printf("");
+    }
+    fclose(fp);
 }
