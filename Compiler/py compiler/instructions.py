@@ -1,9 +1,9 @@
-def create_opcodes(instruction: str, r: int, s: int, t: int):
+def create_opcodes(instruction: str, r: int, s: int, t: int, i: int):
     instructions: dict = {
         """
         DICT STRUCTURE
         [opcode name]: tuple
-        The tuple can contain an int or an tuple:
+        The tuple can contain an int or a tuple:
            - int: gets appended directly onto the byte array
            - tuple: ([value], [size])
                 value: the value that should be appended to the array
@@ -72,6 +72,29 @@ def create_opcodes(instruction: str, r: int, s: int, t: int):
         "rri": (0x9E, (r, 1), 0x00, (t, 1), (s, 4)),
         "rl": (0x8F, (r, 1), (s, 1), (t, 1), (0, 4)),
         "rli": (0x9F, (r, 1), 0x00, (t, 1), (s, 4)),
+
+        #Memory
+        "lw": (0x40, 0x00, (r, 1), (s,1), (t, 4)),
+        "lwi": (0x50, 0x00, (r, 1), (s, 1), (t, 4)),
+        "sw": (0x41, 0x00, (r, 1), (s, 1), (t, 4)),
+        "swi": (0x51, 0x00, (r, 1), (s, 1), (t, 4)),
+
+        #IO
+        "lio": (0x44, (r, 1), (s, 1), 0x00, (t, 4)),
+        "sio": (0x45, (r, 1), (s, 1), 0x00, (t, 4)),
+
+        #call n return
+        "call": (s, 7),
+        "ret": (0x43, (0, 7)),
+
+        #register stuff
+        "cp": (0xc0, (r, 1), 0x00, (t, 1), (0,4)),
+        "cpeq": (0xc2, (r, 1), (s, 1,), (t, 1), (i, 4)),
+        "cpi": (0xd0, (0,2), (t, 1), (i, 4)),
+        "cp": (0xd2, (r, 1), (s, 1), (t, 1), (i, 4)),
+        "swp": (0xc8, (r, 1), (s, 1), (0, 5)),
+        "swpeq": (0xca, (r, 1), (s, 1), (0, 5))
+
     }
 
     instruction_cmd: tuple = instructions.get(instruction)

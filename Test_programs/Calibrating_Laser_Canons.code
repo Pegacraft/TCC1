@@ -1,0 +1,3 @@
+ioread(x,0,10);
+x = x * 6;
+iowrite(x,0,9);
