@@ -1,10 +1,11 @@
+import array
 import instructions
+import lexer
 
-test: bytearray = instructions.create_opcodes("cpeq", 1, 2, 3, 4)
-
-text: str = ""
-for i in test:
-    text += hex(i) + " "
-#with open('a.bin', 'w+b') as f:
-    #f.write(test)
-print(text)
+file_path: str = 'file.code'
+with open(file_path, 'r') as input:
+    with open('a.bin', 'w+b') as output:
+        if_statements: list = ()
+        loops: list = ()
+        word: str = "ioread"
+        output.write(lexer.io_instructions(word,2,3,4))

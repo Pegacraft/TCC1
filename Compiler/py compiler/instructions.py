@@ -1,3 +1,6 @@
+from re import I
+
+
 def create_opcodes(instruction: str, r: int, s: int, t: int, i: int):
     instructions: dict = {
         """
@@ -80,12 +83,12 @@ def create_opcodes(instruction: str, r: int, s: int, t: int, i: int):
         "swi": (0x51, 0x00, (r, 1), (s, 1), (i, 4)),
 
         #IO
-        "lio": (0x44, (r, 1), (s, 1), 0x00, (t, 4)),
-        "sio": (0x45, (r, 1), (s, 1), 0x00, (t, 4)),
+        "lio": (0x44, (r, 1), (s, 1), 0x00, (i, 4)),
+        "sio": (0x45, (r, 1), (s, 1), 0x00, (i, 4)),
 
         #call n return
-        "call": (s, 7),
-        "ret": (0x43, (0, 7)),
+        "call": (0x42,(s, 7)),
+        "ret": (0x43, (s, 7)),
 
         #register stuff
         "cp": (0xc0, (r, 1), 0x00, (t, 1), (0,4)),
@@ -94,7 +97,6 @@ def create_opcodes(instruction: str, r: int, s: int, t: int, i: int):
         "cp": (0xd2, (r, 1), (s, 1), (t, 1), (i, 4)),
         "swp": (0xc8, (r, 1), (s, 1), (0, 5)),
         "swpeq": (0xca, (r, 1), (s, 1), (0, 5))
-
     }
 
     instruction_cmd: tuple = instructions.get(instruction)
