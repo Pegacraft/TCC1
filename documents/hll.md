@@ -9,6 +9,7 @@ ___
 - Declaring a variable works by setting a name and assign a value to it - assignment uses `=` as operator: `foo=5;`
 - Between any symbol or qualifier may be an unlimited amount of spaces or linebreaks.
 - To use procedures from another file, put `use([file])` at the start of your code. The specified file should contain source code as well.
+
 ## Loops and goto
 There are `while`, `for` and `loop` loops.
 
@@ -25,8 +26,7 @@ Shifting uses `<<` and `>>` as well as rotation uses `<<<` and `>>>`.
 
 ## Conditions
 Conditions are generally based on unsigned values and use the commonly accepted symbols: `=, !=, <, >, <=, >=`.  
-Conditional blocks start with `if([condition]) { }` and might be inverted using `ifnot([condition]) { }` 
-or chained by using `else{ }` or `else([condition]){ }`.  
+Conditional blocks start with `if([condition]) { }` and might be chained by using `else{ }` or `else([condition]){ }`.  
 A condition might include arithmetic and logical operations as well as boolean logic using `|| &&`.
 
 ## Arrays

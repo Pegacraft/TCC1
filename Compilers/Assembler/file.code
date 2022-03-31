@@ -1,0 +1,9 @@
+constant FeM 5
+label start
+# comment
+sio 1 0 10
+addi 1 FeM
+
+#blablabla
+lio 1 0 9
+jmp start

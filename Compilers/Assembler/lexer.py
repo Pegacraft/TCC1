@@ -8,4 +8,8 @@ def io_instructions(word:str , val1: int, val2:int, address:int):
     elif (word == "print"):
             return(instructions.create_opcodes("sio", val1, val2, 0, 4))
 
-def loop()
+def lexer_script(input:str):
+        program = open(input, 'r')
+        identifier:bool = False
+        number:bool = False
+        for i in program:
